@@ -1,0 +1,22 @@
+diff -u -r1.264 -r1.265
+--- src/bfd/elf32-arm.c	2011/05/06 10:21:26	1.264
++++ src/bfd/elf32-arm.c	2011/05/18 13:36:11	1.265
+@@ -12025,7 +12025,7 @@
+ 	  struct elf_dyn_relocs *p;
+ 
+ 	  if (h != NULL)
+-	    pp = &((struct elf32_arm_link_hash_entry *) h)->dyn_relocs;
++	    pp = &(eh->dyn_relocs);
+ 	  else
+ 	    {
+ 	      Elf_Internal_Sym *isym;
+@@ -12038,7 +12038,7 @@
+ 	      if (pp == NULL)
+ 		return FALSE;
+ 	    }
+-	  for (pp = &eh->dyn_relocs; (p = *pp) != NULL; pp = &p->next)
++	  for (; (p = *pp) != NULL; pp = &p->next)
+ 	    if (p->sec == sec)
+ 	      {
+ 		/* Everything must go for SEC.  */
+
