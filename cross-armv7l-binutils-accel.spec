@@ -6,7 +6,7 @@
 
 Summary: A GNU collection of binary utilities
 Name: cross-armv7l-binutils-accel
-Version: 2.21.51.0.8
+Version: 2.22
 Release: 1
 License: GPLv3+
 Group: Development/Tools
@@ -22,7 +22,6 @@ Patch05: binutils-2.20.51.0.2-set-long-long.patch
 Patch06: binutils-2.20.51.0.10-copy-osabi.patch
 Patch07: binutils-2.20.51.0.10-sec-merge-emit.patch
 Patch08: binutils-2.20.51.0.2-build-id.patch
-Patch09: binutils-2.21.51.0.8-pr12778.patch
 
 %if "%{name}" != "binutils"
 %define binutils_target %(echo %{name} | sed -e "s/cross-\\(.*\\)-binutils/\\1/")-meego-linux-gnueabi
@@ -97,7 +96,6 @@ to consider using libelf instead of BFD.
 %patch06 -p0 -b .copy-osabi~
 %patch07 -p0 -b .sec-merge-emit~
 %patch08 -p0 -b .build-id~
-%patch09 -p1 -b .pr12778~
 
 
 # We cannot run autotools as there is an exact requirement of autoconf-2.59.

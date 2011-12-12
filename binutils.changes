@@ -1,3 +1,6 @@
+* Mon Dec 12 2011 Ray Donnelly <mingw.android@gmail.com> - 2.22
+- Updated to binutils 2.22
+
 * Tue Jun 28 2011 Junfeng Dong <junfeng.dong@intel.com> - 2.21.51.0.8
 - Add patch binutils-2.21.51.0.8-pr12778.patch to fix dbus failure on arm.
 
