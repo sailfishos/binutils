@@ -1,3 +1,7 @@
+* Tue Feb 07 2012 Carsten Munk <carsten.munk@gmail.com> - 2.22
+- Pull some patches relevant to MIPS from branch update, and
+  fix for PR10144
+
 * Mon Dec 12 2011 Ray Donnelly <mingw.android@gmail.com> - 2.22
 - Updated to binutils 2.22
 

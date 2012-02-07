@@ -2,7 +2,7 @@
 
 NAME=binutils
 SPECNAME=${NAME}.spec
-ARCHES="armv5tel armv6l armv7l armv7hl armv7nhl"
+ARCHES="armv5tel armv6l armv7l armv7hl armv7nhl mipsel"
 TOBASELIBS=""
 TOBASELIBS_ARCH=""
 

@@ -22,9 +22,15 @@ Patch05: binutils-2.20.51.0.2-set-long-long.patch
 Patch06: binutils-2.20.51.0.10-copy-osabi.patch
 Patch07: binutils-2.20.51.0.10-sec-merge-emit.patch
 Patch08: binutils-2.20.51.0.2-build-id.patch
+Patch09: binutils-2.22-branch-updates.patch
+Patch10: binutils-2.22-156-pr10144.patch
 
 %if "%{name}" != "binutils"
+%if "%{name}" != "cross-mipsel-binutils"
 %define binutils_target %(echo %{name} | sed -e "s/cross-\\(.*\\)-binutils/\\1/")-meego-linux-gnueabi
+%else
+%define binutils_target %(echo %{name} | sed -e "s/cross-\\(.*\\)-binutils/\\1/")-meego-linux-gnu
+%endif
 %define _prefix /opt/cross
 %define enable_shared 0
 %define isnative 0
@@ -96,7 +102,8 @@ to consider using libelf instead of BFD.
 %patch06 -p0 -b .copy-osabi~
 %patch07 -p0 -b .sec-merge-emit~
 %patch08 -p0 -b .build-id~
-
+%patch09 -p1 -b .branchupdates
+%patch10 -p1 -b .pr10144
 
 # We cannot run autotools as there is an exact requirement of autoconf-2.59.
 

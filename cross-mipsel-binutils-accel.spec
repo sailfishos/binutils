@@ -5,7 +5,7 @@
 %define accelerator_crossbuild 0
 
 Summary: A GNU collection of binary utilities
-Name: cross-armv7l-binutils
+Name: cross-mipsel-binutils-accel
 Version: 2.22
 Release: 1
 License: GPLv3+
