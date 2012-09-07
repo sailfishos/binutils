@@ -1,4 +1,4 @@
-arch i586 targets armv5tel:armv5tel armv6l:armv6l armv7l:armv7l armv7hl:armv7hl armv7nhl:armv7nhl 
+arch i586 targets armv5tel:armv5tel armv6l:armv6l armv7l:armv7l armv7hl:armv7hl armv7nhl:armv7nhl mipsel:mipsel 
 
 cross-armv5tel-binutils-accel
   targettype x86 block!
@@ -7,6 +7,7 @@ cross-armv5tel-binutils-accel
   targettype armv7l block!
   targettype armv7hl block!
   targettype armv7nhl block!
+  targettype mipsel block!
 
   targettype armv5tel autoreqprov off
   targettype armv5tel provides "cross-arm-binutils-accel"
@@ -48,6 +49,7 @@ cross-armv6l-binutils-accel
   targettype armv7l block!
   targettype armv7hl block!
   targettype armv7nhl block!
+  targettype mipsel block!
 
   targettype armv6l autoreqprov off
   targettype armv6l provides "cross-arm-binutils-accel"
@@ -89,6 +91,7 @@ cross-armv7l-binutils-accel
   targettype armv6l block!
   targettype armv7hl block!
   targettype armv7nhl block!
+  targettype mipsel block!
 
   targettype armv7l autoreqprov off
   targettype armv7l provides "cross-arm-binutils-accel"
@@ -130,6 +133,7 @@ cross-armv7hl-binutils-accel
   targettype armv6l block!
   targettype armv7l block!
   targettype armv7nhl block!
+  targettype mipsel block!
 
   targettype armv7hl autoreqprov off
   targettype armv7hl provides "cross-arm-binutils-accel"
@@ -171,6 +175,7 @@ cross-armv7nhl-binutils-accel
   targettype armv6l block!
   targettype armv7l block!
   targettype armv7hl block!
+  targettype mipsel block!
 
   targettype armv7nhl autoreqprov off
   targettype armv7nhl provides "cross-arm-binutils-accel"
@@ -203,4 +208,46 @@ cross-armv7nhl-binutils-accel
   targettype armv7nhl preun "     echo "${binary}.orig-arm not present !" "
   targettype armv7nhl preun "   fi "
   targettype armv7nhl preun " done "
+
+
+cross-mipsel-binutils-accel
+  targettype x86 block!
+  targettype 32bit block!
+  targettype armv5tel block!
+  targettype armv6l block!
+  targettype armv7l block!
+  targettype armv7hl block!
+  targettype armv7nhl block!
+
+  targettype mipsel autoreqprov off
+  targettype mipsel provides "cross-arm-binutils-accel"
+  targettype mipsel requires "glibc-x86-arm"
+  targettype mipsel requires "zlib-x86-arm"
+  targettype mipsel requires "binutils"
+  targettype mipsel prefix /emul/ia32-linux
+  targettype mipsel extension -arm
+  targettype mipsel +/
+  targettype mipsel -/usr/share/man
+  targettype mipsel -/usr/share/doc
+  targettype mipsel requires "meego-accelerator"
+
+
+
+  targettype mipsel post " for bin in addr2line ar as c++filt gprov ld nm objcopy objdump ranlib readelf size strings strip ; do"
+  targettype mipsel post "   binary="/usr/bin/${bin}" "
+  targettype mipsel post "   if test -e ${binary} -a ! -e ${binary}.orig-arm ; then"
+  targettype mipsel post "     mv ${binary} ${binary}.orig-arm && ln -s <prefix>${binary} ${binary}"
+  targettype mipsel post "   else "
+  targettype mipsel post "     echo "${binary} not installed or ${binary}.orig-arm already present !" "
+  targettype mipsel post "   fi "
+  targettype mipsel post " done "
+
+  targettype mipsel preun " for bin in addr2line ar as c++filt gprov ld nm objcopy objdump ranlib readelf size strings strip ; do"
+  targettype mipsel preun "   binary="/usr/bin/${bin}" "
+  targettype mipsel preun "   if test -e ${binary}.orig-arm ; then"
+  targettype mipsel preun "     rm ${binary} && mv ${binary}.orig-arm ${binary}"
+  targettype mipsel preun "   else "
+  targettype mipsel preun "     echo "${binary}.orig-arm not present !" "
+  targettype mipsel preun "   fi "
+  targettype mipsel preun " done "
 
