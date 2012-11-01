@@ -26,7 +26,7 @@ Patch09: binutils-2.22-branch-updates.patch
 Patch10: binutils-2.22-156-pr10144.patch
 
 %if "%{name}" != "binutils"
-%if "%{name}" != "cross-mipsel-binutils"
+%if "%{name}" != "cross-mipsel-binutils" && "%{name}" != "cross-i486-binutils"
 %define binutils_target %(echo %{name} | sed -e "s/cross-\\(.*\\)-binutils/\\1/")-meego-linux-gnueabi
 %else
 %define binutils_target %(echo %{name} | sed -e "s/cross-\\(.*\\)-binutils/\\1/")-meego-linux-gnu
@@ -133,10 +133,12 @@ echo target is %{binutils_target}
 export CFLAGS="$RPM_OPT_FLAGS"
 CARGS=
 
+%if %{isnative}
 case %{binutils_target} in i?86*)
   CARGS="$CARGS --enable-64-bit-bfd"
   ;;
 esac
+%endif
 
 %if 0%{?_with_debug:1}
 CFLAGS="$CFLAGS -O0 -ggdb2"
@@ -167,9 +169,10 @@ export CFLAGS="$CFLAGS -Wl,-rpath,/emul/ia32-linux/usr/lib:/emul/ia32-linux/lib:
   --disable-shared \
 %endif
   $CARGS \
+  --enable-gold \
   --disable-werror \
   --enable-lto \
-  --with-bugurl=http://bugzilla.meego.com
+  --with-bugurl=http://bugs.merproject.org
 make %{_smp_mflags} tooldir=%{_prefix} all
 make %{_smp_mflags} tooldir=%{_prefix} info
 
@@ -289,12 +292,18 @@ rm -rf %{buildroot}%{_prefix}/%{binutils_target}
 %find_lang %{?cross}gas
 %find_lang %{?cross}ld
 %find_lang %{?cross}gprof
+# MIPS gold support is not working as far as we know. The configure
+# --enable-gold seems to be a no-op so it's left in to make it easier
+# to fix when gold is supported in MIPS.
+%ifnarch mips mipsel
+%find_lang %{?cross}gold
+cat %{?cross}gold.lang >> %{?cross}binutils.lang
+%endif
 cat %{?cross}opcodes.lang >> %{?cross}binutils.lang
 cat %{?cross}bfd.lang >> %{?cross}binutils.lang
 cat %{?cross}gas.lang >> %{?cross}binutils.lang
 cat %{?cross}ld.lang >> %{?cross}binutils.lang
 cat %{?cross}gprof.lang >> %{?cross}binutils.lang
-
 %clean
 rm -rf %{buildroot}
 
@@ -344,7 +353,15 @@ fi
 %if %{isnative}
 %{_infodir}/[^b]*info*
 %{_infodir}/binutils*info*
+%endif
 
+%if "%{name}" == "cross-i486-binutils"
+%exclude %{_prefix}/include/*
+%exclude %{_prefix}/%{_lib}/*.a
+%exclude %{_prefix}/%{_lib}/*.la
+%endif
+
+%if %{isnative}
 %files devel
 %defattr(-,root,root,-)
 %{_prefix}/include/*
