@@ -25,6 +25,17 @@ Patch08: binutils-2.20.51.0.2-build-id.patch
 Patch09: binutils-2.22-branch-updates.patch
 Patch10: binutils-2.22-156-pr10144.patch
 
+# MIPS gold support is not working as far as we know. The configure
+# --enable-gold seems to be a no-op so it's left in to make it easier
+# to fix when gold is supported in MIPS.
+%define has_gold 1
+%ifarch mips mipsel
+%define has_gold 0
+%endif
+%if "%{name}" == "cross-mipsel-binutils"
+%define has_gold 0
+%endif
+
 %if "%{name}" != "binutils"
 %if "%{name}" != "cross-mipsel-binutils" && "%{name}" != "cross-i486-binutils"
 %define binutils_target %(echo %{name} | sed -e "s/cross-\\(.*\\)-binutils/\\1/")-meego-linux-gnueabi
@@ -292,10 +303,7 @@ rm -rf %{buildroot}%{_prefix}/%{binutils_target}
 %find_lang %{?cross}gas
 %find_lang %{?cross}ld
 %find_lang %{?cross}gprof
-# MIPS gold support is not working as far as we know. The configure
-# --enable-gold seems to be a no-op so it's left in to make it easier
-# to fix when gold is supported in MIPS.
-%ifnarch mips mipsel
+%if %{has_gold}
 %find_lang %{?cross}gold
 cat %{?cross}gold.lang >> %{?cross}binutils.lang
 %endif

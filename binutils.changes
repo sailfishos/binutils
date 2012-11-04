@@ -1,3 +1,6 @@
+* Sun Nov 04 2012 David Greaves <david@dgreaves.com> - 2.22
+- gold is not available on mips or cross-mipsel
+
 * Thu Nov 01 2012 David Greaves <david@dgreaves.com> - 2.22
 - Enable gold linker
 - Correct bug link
