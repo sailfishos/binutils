@@ -37,7 +37,7 @@ Patch10: binutils-2.22-156-pr10144.patch
 %endif
 
 %if "%{name}" != "binutils"
-%if "%{name}" != "cross-mipsel-binutils" && "%{name}" != "cross-i486-binutils"
+%if "%{name}" != "cross-mipsel-binutils" && "%{name}" != "cross-i486-binutils" && "%{name}" != "cross-x86_64-binutils"
 %define binutils_target %(echo %{name} | sed -e "s/cross-\\(.*\\)-binutils/\\1/")-meego-linux-gnueabi
 %else
 %define binutils_target %(echo %{name} | sed -e "s/cross-\\(.*\\)-binutils/\\1/")-meego-linux-gnu
