@@ -2,28 +2,19 @@
 %define isnative 1
 %define enable_shared 1
 %define run_testsuite 0
-%define accelerator_crossbuild 0
 
 Summary: A GNU collection of binary utilities
 Name: cross-armv7l-binutils
-Version: 2.22
+Version: 2.23.1
 Release: 1
 License: GPLv3+
 Group: Development/Tools
 URL: http://sources.redhat.com/binutils
 Source: ftp://ftp.kernel.org/pub/linux/devel/binutils/binutils-%{version}.tar.bz2
 Source2: binutils-2.19.50.0.1-output-format.sed
-Source100: baselibs.conf
 Source200: precheckin.sh
 Source201: README.PACKAGER
-Patch01: binutils-2.20.51.0.2-libtool-lib64.patch
-Patch04: binutils-2.20.51.0.2-version.patch
-Patch05: binutils-2.20.51.0.2-set-long-long.patch
-Patch06: binutils-2.20.51.0.10-copy-osabi.patch
-Patch07: binutils-2.20.51.0.10-sec-merge-emit.patch
-Patch08: binutils-2.20.51.0.2-build-id.patch
-Patch09: binutils-2.22-branch-updates.patch
-Patch10: binutils-2.22-156-pr10144.patch
+Patch0: binutils_2.23.1-0ubuntu6.diff.gz 
 
 # MIPS gold support is not working as far as we know. The configure
 # --enable-gold seems to be a no-op so it's left in to make it easier
@@ -49,18 +40,9 @@ Patch10: binutils-2.22-156-pr10144.patch
 %define cross %{binutils_target}-
 # single target atm.
 ExclusiveArch: %ix86
-# special handling for MeeGo ARM build acceleration
-%if "%(echo %{name} | sed -e "s/cross-.*-binutils-\\(.*\\)/\\1/")" == "accel"
-%define binutils_target %(echo %{name} | sed -e "s/cross-\\(.*\\)-binutils-accel/\\1/")-meego-linux-gnueabi
-%define _prefix /usr
-%define cross ""
-%define accelerator_crossbuild 1
-AutoReqProv: 0
-%define _build_name_fmt    %%{ARCH}/%%{NAME}-%%{VERSION}-%%{RELEASE}.%%{ARCH}.dontuse.rpm
-%endif
 %endif
 
-BuildRequires: texinfo >= 4.0, gettext, flex, bison, zlib-devel
+BuildRequires: quilt, texinfo >= 4.0, gettext, flex, bison, zlib-devel
 # Required for: ld-bootstrap/bootstrap.exp bootstrap with --static
 # It should not be required for: ld-elf/elf.exp static {preinit,init,fini} array
 %if %{run_testsuite}
@@ -93,7 +75,6 @@ converting addresses to file and line).
 %package devel
 Summary: BFD and opcodes static libraries and header files
 Group: System/Libraries
-Conflicts: binutils < 2.17.50.0.3-4
 Requires(post): /sbin/install-info
 Requires(preun): /sbin/install-info
 Requires: zlib-devel
@@ -106,15 +87,9 @@ to consider using libelf instead of BFD.
 
 %prep
 %setup -q -n binutils-%{version}
-%patch01 -p0 -b .libtool-lib64~
-# Causes build churn --cvm
-#%patch04 -p0 -b .version~
-%patch05 -p0 -b .set-long-long~
-%patch06 -p0 -b .copy-osabi~
-%patch07 -p0 -b .sec-merge-emit~
-%patch08 -p0 -b .build-id~
-%patch09 -p1 -b .branchupdates
-%patch10 -p1 -b .pr10144
+%patch0 -p1 -b .ubuntu
+sed -i 's|^001_ld_makefile_patch.patch$||g' debian/patches/series
+QUILT_PATCHES=debian/patches quilt push -a
 
 # We cannot run autotools as there is an exact requirement of autoconf-2.59.
 
@@ -158,21 +133,13 @@ CFLAGS="$CFLAGS -O0 -ggdb2"
 
 # We could optimize the cross builds size by --enable-shared but the produced
 # binaries may be less convenient in the embedded environment.
-%if %{accelerator_crossbuild}
-export CFLAGS="$CFLAGS -Wl,-rpath,/emul/ia32-linux/usr/lib:/emul/ia32-linux/lib:/usr/lib:/lib"
-%endif
 %configure \
   --build=%{_target_platform} --host=%{_target_platform} \
   --target=%{binutils_target} \
 %if !%{isnative} 
-%if !%{accelerator_crossbuild}
   --enable-targets=%{_host} \
   --with-sysroot=%{_prefix}/%{binutils_target}/sys-root \
   --program-prefix=%{cross} \
-%else
-  --with-sysroot=/ \
-  --program-prefix="" \
-%endif
 %endif
 %if %{enable_shared}
   --enable-shared \
