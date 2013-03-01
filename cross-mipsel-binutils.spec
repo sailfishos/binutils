@@ -148,6 +148,7 @@ CFLAGS="$CFLAGS -O0 -ggdb2"
 %endif
   $CARGS \
   --enable-gold \
+  --enable-deterministic-archives \
   --disable-werror \
   --enable-lto \
   --with-bugurl=http://bugs.merproject.org

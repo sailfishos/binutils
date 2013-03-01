@@ -1,3 +1,6 @@
+* Fri Mar 01 2013 Carsten Munk <carsten.munk@jollamobile.com> - 2.23.1
+- Enable deterministic ar/ranlib so gcc can avoid rebuilds
+
 * Tue Feb 05 2013 Carsten Munk <carsten.munk@jollamobile.com> - 2.23.1
 - Upgrade to 2.23.1
 
