@@ -1,3 +1,6 @@
+* Wed Mar 20 2013 Carsten Munk <carsten.munk@jollamobile.com> - 2.23.1
+- Fix assertion seen with Tag_FP_arch
+
 * Fri Mar 01 2013 Carsten Munk <carsten.munk@jollamobile.com> - 2.23.1
 - Enable deterministic ar/ranlib so gcc can avoid rebuilds
 
