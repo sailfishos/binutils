@@ -194,6 +194,7 @@ make CFLAGS="-g -fPIC $RPM_OPT_FLAGS -fvisibility=hidden" -C bfd
 install -m 644 bfd/libbfd.a %{buildroot}%{_prefix}/%{_lib}
 install -m 644 libiberty/libiberty.a %{buildroot}%{_prefix}/%{_lib}
 install -m 644 include/libiberty.h %{buildroot}%{_prefix}/include
+install -m 644 include/demangle.h %{buildroot}%{_prefix}/include
 # Remove Windows/Novell only man pages
 rm -f %{buildroot}%{_mandir}/man1/{dlltool,nlmconv,windres}*
 
