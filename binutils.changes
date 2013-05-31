@@ -1,3 +1,6 @@
+* Fri May 31 2013 Carsten Munk <carsten.munk@jollamobile.com> - 2.23.1
+- Add armv7thl port
+
 * Tue May 07 2013 Matti Kosola <matti.kosola@jollamobile.com> - 2.23.1
 - Install demangle.h to binutils development package
 
