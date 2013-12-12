@@ -5,7 +5,7 @@
 
 Summary: A GNU collection of binary utilities
 Name: cross-armv7nhl-binutils
-Version: 2.23.1
+Version: 2.24
 Release: 1
 License: GPLv3+
 Group: Development/Tools
@@ -14,7 +14,7 @@ Source: ftp://ftp.kernel.org/pub/linux/devel/binutils/binutils-%{version}.tar.bz
 Source2: binutils-2.19.50.0.1-output-format.sed
 Source200: precheckin.sh
 Source201: README.PACKAGER
-Patch0: binutils_2.23.1-0ubuntu6.diff.gz 
+Patch0: binutils_2.24-2ubuntu1.diff.gz
 Patch1: 0001-Fix-newer-binutils-not-to-assert-on-non-existence-tag_FP_arch.patch
 
 # MIPS gold support is not working as far as we know. The configure
