@@ -4,7 +4,7 @@
 %define run_testsuite 0
 
 Summary: A GNU collection of binary utilities
-Name: cross-armv7tnhl-binutils
+Name: cross-aarch64-binutils
 Version: 2.24
 Release: 1
 License: GPLv3+

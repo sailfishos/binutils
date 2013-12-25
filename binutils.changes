@@ -1,3 +1,6 @@
+* Wed Dec 25 2013 Carsten Munk <carsten.munk@jollamobile.com> - 2.24
+- Update to 2.24 and add aarch64 port.
+
 * Fri May 31 2013 Carsten Munk <carsten.munk@jollamobile.com> - 2.23.1
 - Add armv7thl port
 

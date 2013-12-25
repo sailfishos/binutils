@@ -21,15 +21,18 @@ Patch1: 0001-Fix-newer-binutils-not-to-assert-on-non-existence-tag_FP_arch.patch
 # --enable-gold seems to be a no-op so it's left in to make it easier
 # to fix when gold is supported in MIPS.
 %define has_gold 1
-%ifarch mips mipsel
+%ifarch mips mipsel aarch64
 %define has_gold 0
 %endif
 %if "%{name}" == "cross-mipsel-binutils"
 %define has_gold 0
 %endif
+%if "%{name}" == "cross-aarch64-binutils"
+%define has_gold 0
+%endif
 
 %if "%{name}" != "binutils"
-%if "%{name}" != "cross-mipsel-binutils" && "%{name}" != "cross-i486-binutils" && "%{name}" != "cross-x86_64-binutils"
+%if "%{name}" != "cross-mipsel-binutils" && "%{name}" != "cross-i486-binutils" && "%{name}" != "cross-x86_64-binutils" && "%{name}" != "cross-aarch64-binutils"
 %define binutils_target %(echo %{name} | sed -e "s/cross-\\(.*\\)-binutils/\\1/")-meego-linux-gnueabi
 %else
 %define binutils_target %(echo %{name} | sed -e "s/cross-\\(.*\\)-binutils/\\1/")-meego-linux-gnu
