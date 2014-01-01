@@ -43,7 +43,7 @@ Patch1: 0001-Fix-newer-binutils-not-to-assert-on-non-existence-tag_FP_arch.patch
 %define run_testsuite 0
 %define cross %{binutils_target}-
 # single target atm.
-ExclusiveArch: %ix86
+ExclusiveArch: %ix86 x86_64
 %endif
 
 BuildRequires: quilt, texinfo >= 4.0, gettext, flex, bison, zlib-devel
