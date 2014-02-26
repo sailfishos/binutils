@@ -152,6 +152,7 @@ CFLAGS="$CFLAGS -O0 -ggdb2"
 %endif
   $CARGS \
   --enable-gold \
+  --enable-plugins \
   --enable-deterministic-archives \
   --disable-werror \
   --enable-lto \
