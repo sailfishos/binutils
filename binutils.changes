@@ -1,3 +1,8 @@
+* Sun Dec 28 2014 Pasi Sjöholm <pasi.sjoholm@jollamobile.com> - 2.25
+- Update to 2.25
+- Fixes CVE-2014-8737, CVE-2014-8504, CVE-2014-8503, CVE-2014-8502
+  CVE-2014-8501, CVE-2014-8485 and CVE-2014-8484
+
 * Thu Feb 27 2014 Chris Leach <cxl000@hotmail.com> - 2.24
 - Enable the -plugin option.
 
