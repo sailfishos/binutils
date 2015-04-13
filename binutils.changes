@@ -1,3 +1,6 @@
+* Wed Apr 12 2015 Islam Amer <islam.amer@jollamobile.com> - 2.25
+- Trivial changelog fixes MER#888
+
 * Sun Dec 28 2014 Pasi Sjöholm <pasi.sjoholm@jollamobile.com> - 2.25
 - Update to 2.25
 - Fixes CVE-2014-8737, CVE-2014-8504, CVE-2014-8503, CVE-2014-8502
@@ -36,7 +39,7 @@
 - Added i486 as cross target based on Tom Swindell's work
 
 * Fri Sep 07 2012 David Greaves <david@dgreaves.com> - 2.22
- - Added armv7tnhl
+- Added armv7tnhl
 
 * Tue Feb 07 2012 Carsten Munk <carsten.munk@gmail.com> - 2.22
 - Pull some patches relevant to MIPS from branch update, and
@@ -53,7 +56,7 @@
 - Clean unused patch files.
 - Drop binutils.spec.diff.
 
-* Sun Apr 24 08:02:35 UTC 2011 - Jan-Simon Möller <jsmoeller@linuxfoundation.org> - 1.0
+* Sun Apr 24 2011 Jan-Simon Möller <jsmoeller@linuxfoundation.org> - 1.0
 - Add baselibs.conf to src.rpm
 
 * Thu Mar 10 2011 Junfeng Dong <junfeng.dong@intel.com> -2.21
@@ -94,20 +97,20 @@
 * Sat Aug 22 2009 Anas Nashif <anas.nashif@intel.com> - 2.19.51.0.14
 - Update to 2.19.51.0.14
 
-* Wed May 06 2009 Arjan van de Ven <arjan@linux.intel.com> 2.19
+* Wed May 06 2009 Arjan van de Ven <arjan@linux.intel.com> - 2.19
 - Add LD_AS_NEEDED environment variable
 
-* Tue Jan 13 2009 Anas Nashif <anas.nashif@intel.com> 2.19
+* Tue Jan 13 2009 Anas Nashif <anas.nashif@intel.com> - 2.19
 - Fixed source tag
 
-* Thu Jan 08 2009 Anas Nashif <anas.nashif@intel.com> 2.19
+* Thu Jan 08 2009 Anas Nashif <anas.nashif@intel.com> - 2.19
 - Update to 2.19
 
-* Tue Dec 16 2008 Anas Nashif <anas.nashif@intel.com> 2.18.50.0.6
+* Tue Dec 16 2008 Anas Nashif <anas.nashif@intel.com> - 2.18.50.0.6
 - Fixed rpmlint errors in Summary tag
 
-* Thu Dec 11 2008 Anas Nashif <anas.nashif@intel.com> 2.18.50.0.6
+* Thu Dec 11 2008 Anas Nashif <anas.nashif@intel.com> - 2.18.50.0.6
 - Do not check for ia64
 
-* Thu Sep 18 2008 Austin Zhang <austin.zhang@intel.com> 2.18.50.0.6
+* Thu Sep 18 2008 Austin Zhang <austin.zhang@intel.com> - 2.18.50.0.6
 - add check for the info file before installation
