@@ -27,9 +27,6 @@ Patch1: 0001-Fix-newer-binutils-not-to-assert-on-non-existence-tag_FP_arch.patch
 %if "%{name}" == "cross-mipsel-binutils"
 %define has_gold 0
 %endif
-%if "%{name}" == "cross-aarch64-binutils"
-%define has_gold 0
-%endif
 
 %if "%{name}" != "binutils"
 %if "%{name}" != "cross-mipsel-binutils" && "%{name}" != "cross-i486-binutils" && "%{name}" != "cross-x86_64-binutils" && "%{name}" != "cross-aarch64-binutils"
