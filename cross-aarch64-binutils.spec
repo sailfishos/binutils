@@ -16,15 +16,19 @@ Source200: precheckin.sh
 Source201: README.PACKAGER
 Patch0: binutils_2.25-2ubuntu1.diff.gz
 Patch1: 0001-Fix-newer-binutils-not-to-assert-on-non-existence-tag_FP_arch.patch
+Patch2: binutils-2.21.51.0.8-asneeded.patch
 
 # MIPS gold support is not working as far as we know. The configure
 # --enable-gold seems to be a no-op so it's left in to make it easier
 # to fix when gold is supported in MIPS.
 %define has_gold 1
-%ifarch mips mipsel aarch64
+%ifarch mips mipsel
 %define has_gold 0
 %endif
 %if "%{name}" == "cross-mipsel-binutils"
+%define has_gold 0
+%endif
+%if "%{name}" == "cross-aarch64-binutils"
 %define has_gold 0
 %endif
 
@@ -92,6 +96,7 @@ to consider using libelf instead of BFD.
 sed -i 's|^001_ld_makefile_patch.patch$||g' debian/patches/series
 QUILT_PATCHES=debian/patches quilt push -a
 %patch1 -p2 -b .fp_arch
+%patch2 -p1 -b .asneeded
 # We cannot run autotools as there is an exact requirement of autoconf-2.59.
 
 # On ppc64 we might use 64KiB pages

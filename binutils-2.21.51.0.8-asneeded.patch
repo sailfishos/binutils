@@ -1,0 +1,18 @@
+diff -ru binutils-2.21.51.0.8/ld/ldmain.c binutils-2.21.51.0.8-asneeded/ld/ldmain.c
+--- binutils-2.21.51.0.8/ld/ldmain.c	2011-04-08 20:58:19.000000000 +0200
++++ binutils-2.21.51.0.8-asneeded/ld/ldmain.c	2016-05-02 08:34:06.995163814 +0200
+@@ -265,6 +265,9 @@
+   command_line.check_section_addresses = -1;
+   command_line.disable_target_specific_optimizations = -1;
+ 
++  if (getenv ("LD_AS_NEEDED") != NULL)
++    as_needed = TRUE;
++
+   /* We initialize DEMANGLING based on the environment variable
+      COLLECT_NO_DEMANGLE.  The gcc collect2 program will demangle the
+      output of the linker, unless COLLECT_NO_DEMANGLE is set in the
+Only in binutils-2.21.51.0.8-asneeded/ld: ldmain.c.orig
+Only in binutils-2.21.51.0.8-asneeded/ld: ld.texinfo.orig
+Only in binutils-2.21.51.0.8-asneeded/ld: ld.texinfo.rej
+Only in binutils-2.21.51.0.8-asneeded/ld: NEWS.orig
+Only in binutils-2.21.51.0.8-asneeded/ld: NEWS.rej
