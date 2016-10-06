@@ -22,13 +22,10 @@ Patch2: binutils-2.21.51.0.8-asneeded.patch
 # --enable-gold seems to be a no-op so it's left in to make it easier
 # to fix when gold is supported in MIPS.
 %define has_gold 1
-%ifarch mips mipsel aarch64
+%ifarch mips mipsel
 %define has_gold 0
 %endif
 %if "%{name}" == "cross-mipsel-binutils"
-%define has_gold 0
-%endif
-%if "%{name}" == "cross-aarch64-binutils"
 %define has_gold 0
 %endif
 
