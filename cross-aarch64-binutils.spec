@@ -52,8 +52,6 @@ BuildRequires: dejagnu, zlib-static, glibc-static, sharutils
 %endif
 BuildRequires: elfutils-libelf-devel
 Conflicts: gcc-c++ < 4.0.0
-Requires(post): /sbin/install-info
-Requires(preun): /sbin/install-info
 
 # On ARM EABI systems, we do want -gnueabi to be part of the
 # target triple.
@@ -77,15 +75,24 @@ converting addresses to file and line).
 %package devel
 Summary: BFD and opcodes static libraries and header files
 Group: System/Libraries
-Requires(post): /sbin/install-info
-Requires(preun): /sbin/install-info
 Requires: zlib-devel
+Requires: %{name} = %{version}-%{release}
 
 %description devel
 This package contains BFD and opcodes static libraries and associated
 header files.  Only *.a libraries are included, because BFD doesn't
 have a stable ABI.  Developers starting new projects are strongly encouraged
 to consider using libelf instead of BFD.
+
+%package doc
+Summary: Documentation for %{name}
+Group:   Documentation
+Requires: %{name} = %{version}-%{release}
+Requires(post): /sbin/install-info
+Requires(preun): /sbin/install-info
+
+%description doc
+Man and info pages for %{name}.
 
 %prep
 %setup -q -n binutils-%{version}
@@ -194,27 +201,27 @@ make CFLAGS="-g -fPIC $RPM_OPT_FLAGS" -C libiberty
 make -C bfd clean
 make CFLAGS="-g -fPIC $RPM_OPT_FLAGS -fvisibility=hidden" -C bfd
 
-install -m 644 bfd/libbfd.a %{buildroot}%{_prefix}/%{_lib}
-install -m 644 libiberty/libiberty.a %{buildroot}%{_prefix}/%{_lib}
-install -m 644 include/libiberty.h %{buildroot}%{_prefix}/include
-install -m 644 include/demangle.h %{buildroot}%{_prefix}/include
+install -m 644 bfd/libbfd.a %{buildroot}%{_libdir}
+install -m 644 libiberty/libiberty.a %{buildroot}%{_libdir}
+install -m 644 include/libiberty.h %{buildroot}%{_includedir}
+install -m 644 include/demangle.h %{buildroot}%{_includedir}
 # Remove Windows/Novell only man pages
 rm -f %{buildroot}%{_mandir}/man1/{dlltool,nlmconv,windres}*
 
 %if %{enable_shared}
-chmod +x %{buildroot}%{_prefix}/%{_lib}/lib*.so*
+chmod +x %{buildroot}%{_libdir}/lib*.so*
 %endif
 
 # Prevent programs to link against libbfd and libopcodes dynamically,
 # they are changing far too often
-rm -f %{buildroot}%{_prefix}/%{_lib}/lib{bfd,opcodes}.so
+rm -f %{buildroot}%{_libdir}/lib{bfd,opcodes}.so
 
 # Remove libtool files, which reference the .so libs
-rm -f %{buildroot}%{_prefix}/%{_lib}/lib{bfd,opcodes}.la
+rm -f %{buildroot}%{_libdir}/lib{bfd,opcodes}.la
 
 %if "%{__isa_bits}" == "64"
 # Sanity check --enable-64-bit-bfd really works.
-grep '^#define BFD_ARCH_SIZE 64$' %{buildroot}%{_prefix}/include/bfd.h
+grep '^#define BFD_ARCH_SIZE 64$' %{buildroot}%{_includedir}/bfd.h
 %endif
 # Fix multilib conflicts of generated values by __WORDSIZE-based expressions.
 %ifarch %{ix86} x86_64 
@@ -227,9 +234,9 @@ sed -i -e '/^#include "ansidecl.h"/{p;s~^.*$~#include <bits/wordsize.h>~;}' \
 #define BFD_HOST_64_BIT long\
 #endif/' \
     -e 's/^#define BFD_HOST_U_64_BIT unsigned \(long \)\?long *$/#define BFD_HOST_U_64_BIT unsigned BFD_HOST_64_BIT/' \
-    %{buildroot}%{_prefix}/include/bfd.h
+    %{buildroot}%{_includedir}/bfd.h
 %endif
-touch -r bfd/bfd-in2.h %{buildroot}%{_prefix}/include/bfd.h
+touch -r bfd/bfd-in2.h %{buildroot}%{_includedir}/bfd.h
 
 # Generate .so linker scripts for dependencies; imported from glibc/Makerules:
 
@@ -240,7 +247,7 @@ OUTPUT_FORMAT="\
    on a multi-architecture system.  */
 $(gcc $CFLAGS $LDFLAGS -shared -x c /dev/null -o /dev/null -Wl,--verbose -v 2>&1 | sed -n -f "%{SOURCE2}")"
 
-tee %{buildroot}%{_prefix}/%{_lib}/libbfd.so <<EOH
+tee %{buildroot}%{_libdir}/libbfd.so <<EOH
 /* GNU ld script */
 
 $OUTPUT_FORMAT
@@ -249,7 +256,7 @@ $OUTPUT_FORMAT
 INPUT ( %{_libdir}/libbfd.a -liberty -lz )
 EOH
 
-tee %{buildroot}%{_prefix}/%{_lib}/libopcodes.so <<EOH
+tee %{buildroot}%{_libdir}/libopcodes.so <<EOH
 /* GNU ld script */
 
 $OUTPUT_FORMAT
@@ -261,9 +268,9 @@ EOH
 # For cross-binutils we drop the documentation.
 rm -rf %{buildroot}%{_infodir}
 # We keep these as one can have native + cross binutils of different versions.
-#rm -rf %{buildroot}%{_prefix}/share/locale
+#rm -rf %{buildroot}%{_datadir}/locale
 #rm -rf %{buildroot}%{_mandir}
-rm -rf %{buildroot}%{_prefix}/%{_lib}/libiberty.a
+rm -rf %{buildroot}%{_libdir}/libiberty.a
 %endif # !%{isnative}
 
 # This one comes from gcc
@@ -285,21 +292,30 @@ cat %{?cross}bfd.lang >> %{?cross}binutils.lang
 cat %{?cross}gas.lang >> %{?cross}binutils.lang
 cat %{?cross}ld.lang >> %{?cross}binutils.lang
 cat %{?cross}gprof.lang >> %{?cross}binutils.lang
+
+# move doc files
+mkdir -p %{buildroot}%{_docdir}/%{name}-%{version}
+install -m0644 README %{buildroot}%{_docdir}/%{name}-%{version}
+
 %clean
 rm -rf %{buildroot}
 
 %if %{isnative}
-%post
-/sbin/ldconfig
+%post -p /sbin/ldconfig
+
+%postun -p /sbin/ldconfig
+
+%post doc
 %install_info --info-dir=%{_infodir} %{_infodir}/as.info
 %install_info --info-dir=%{_infodir} %{_infodir}/binutils.info
 %install_info --info-dir=%{_infodir} %{_infodir}/gprof.info
 %install_info --info-dir=%{_infodir} %{_infodir}/ld.info
 %install_info --info-dir=%{_infodir} %{_infodir}/standards.info
 %install_info --info-dir=%{_infodir} %{_infodir}/configure.info
+%install_info --info-dir=%{_infodir} %{_infodir}/bfd.info
 exit 0
 
-%preun
+%preun doc
 if [ $1 = 0 ] ;then
   %install_info --delete --info-dir=%{_infodir} %{_infodir}/as.info
   %install_info --delete --info-dir=%{_infodir} %{_infodir}/binutils.info
@@ -307,48 +323,41 @@ if [ $1 = 0 ] ;then
   %install_info --delete --info-dir=%{_infodir} %{_infodir}/ld.info
   %install_info --delete --info-dir=%{_infodir} %{_infodir}/standards.info
   %install_info --delete --info-dir=%{_infodir} %{_infodir}/configure.info
+  %install_info --delete --info-dir=%{_infodir} %{_infodir}/bfd.info
 fi
 exit 0
 
-%postun -p /sbin/ldconfig
-
-%post devel
-%install_info --info-dir=%{_infodir} %{_infodir}/bfd.info
-
-%preun devel
-if [ $1 = 0 ] ;then
-  %install_info --delete --info-dir=%{_infodir} %{_infodir}/bfd.info
-fi
 %endif # %{isnative}
 
 %files -f %{?cross}binutils.lang
 %defattr(-,root,root,-)
-%doc README
-%{_prefix}/bin/*
-%{_mandir}/man1/*
+%license COPYING3
+%{_bindir}/*
 %if %{enable_shared}
-%{_prefix}/%{_lib}/lib*.so
-%exclude %{_prefix}/%{_lib}/libbfd.so
-%exclude %{_prefix}/%{_lib}/libopcodes.so
-%endif
-%if %{isnative}
-%{_infodir}/[^b]*info*
-%{_infodir}/binutils*info*
+%{_libdir}/lib*.so
+%exclude %{_libdir}/libbfd.so
+%exclude %{_libdir}/libopcodes.so
 %endif
 
 %if "%{name}" == "cross-i486-binutils"
-%exclude %{_prefix}/include/*
-%exclude %{_prefix}/%{_lib}/*.a
-%exclude %{_prefix}/%{_lib}/*.la
+%exclude %{_includedir}/*
+%exclude %{_libdir}/*.a
+%exclude %{_libdir}/*.la
+%endif
+
+%files doc
+%defattr(-,root,root,-)
+%doc %{_docdir}/%{name}-%{version}
+%{_mandir}/man1/*
+%if %{isnative}
+%{_infodir}/*info*
 %endif
 
 %if %{isnative}
 %files devel
 %defattr(-,root,root,-)
-%{_prefix}/include/*
-%{_prefix}/%{_lib}/libbfd.so
-%{_prefix}/%{_lib}/libopcodes.so
-%{_prefix}/%{_lib}/lib*.a
-%{_infodir}/bfd*info*
+%{_includedir}/*
+%{_libdir}/libbfd.so
+%{_libdir}/libopcodes.so
+%{_libdir}/lib*.a
 %endif # %{isnative}
-
