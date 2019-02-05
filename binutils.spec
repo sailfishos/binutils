@@ -6,7 +6,7 @@
 Summary: A GNU collection of binary utilities
 Name: binutils
 Version: 2.25
-Release: 1
+Release: 3
 License: GPLv3+
 Group: Development/Tools
 URL: http://sources.redhat.com/binutils
