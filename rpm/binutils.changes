@@ -1,0 +1,125 @@
+* Tue Feb 5 2019 Tomi Leppänen <tomi.leppanen@jolla.com> - 2.25-3
+- [packaging] Add separate doc subpackage. Contributes to JB#24119
+
+* Fri Nov 24 2017 Andrew Branson <andrew.branson@jollamobile.com> - 2.25-2
+- Align changelog with build tag. JB#39688
+
+* Sun Jan 17 2016 Martin Ghosal <martin_ghosal@hotmail.co.uk> - 2.25
+- Enable gold for cross-aarch64 and aarch64 builds, fixes MER#1464
+
+* Wed Apr 12 2015 Islam Amer <islam.amer@jollamobile.com> - 2.25
+- Trivial changelog fixes MER#888
+
+* Sun Dec 28 2014 Pasi Sjöholm <pasi.sjoholm@jollamobile.com> - 2.25
+- Update to 2.25
+- Fixes CVE-2014-8737, CVE-2014-8504, CVE-2014-8503, CVE-2014-8502
+  CVE-2014-8501, CVE-2014-8485 and CVE-2014-8484
+
+* Thu Feb 27 2014 Chris Leach <cxl000@hotmail.com> - 2.24
+- Enable the -plugin option.
+
+* Wed Dec 25 2013 Carsten Munk <carsten.munk@jollamobile.com> - 2.24
+- Update to 2.24 and add aarch64 port.
+
+* Fri May 31 2013 Carsten Munk <carsten.munk@jollamobile.com> - 2.23.1
+- Add armv7thl port
+
+* Tue May 07 2013 Matti Kosola <matti.kosola@jollamobile.com> - 2.23.1
+- Install demangle.h to binutils development package
+
+* Wed Mar 20 2013 Carsten Munk <carsten.munk@jollamobile.com> - 2.23.1
+- Fix assertion seen with Tag_FP_arch
+
+* Fri Mar 01 2013 Carsten Munk <carsten.munk@jollamobile.com> - 2.23.1
+- Enable deterministic ar/ranlib so gcc can avoid rebuilds
+
+* Tue Feb 05 2013 Carsten Munk <carsten.munk@jollamobile.com> - 2.23.1
+- Upgrade to 2.23.1
+
+* Fri Jan 25 2013 Oleg Girko <ol+mer@infoserver.ru> - 2.22
+- Add support for building on x86_64 architecture.
+
+* Sun Nov 04 2012 David Greaves <david@dgreaves.com> - 2.22
+- gold is not available on mips or cross-mipsel
+
+* Thu Nov 01 2012 David Greaves <david@dgreaves.com> - 2.22
+- Enable gold linker
+- Correct bug link
+- Added i486 as cross target based on Tom Swindell's work
+
+* Fri Sep 07 2012 David Greaves <david@dgreaves.com> - 2.22
+- Added armv7tnhl
+
+* Tue Feb 07 2012 Carsten Munk <carsten.munk@gmail.com> - 2.22
+- Pull some patches relevant to MIPS from branch update, and
+  fix for PR10144
+
+* Mon Dec 12 2011 Ray Donnelly <mingw.android@gmail.com> - 2.22
+- Updated to binutils 2.22
+
+* Tue Jun 28 2011 Junfeng Dong <junfeng.dong@intel.com> - 2.21.51.0.8
+- Add patch binutils-2.21.51.0.8-pr12778.patch to fix dbus failure on arm.
+
+* Tue May 03 2011 Junfeng Dong <junfeng.dong@intel.com> - 2.21.51.0.8
+- Update to latest version 2.21.51.0.8.
+- Clean unused patch files.
+- Drop binutils.spec.diff.
+
+* Sun Apr 24 2011 Jan-Simon Möller <jsmoeller@linuxfoundation.org> - 1.0
+- Add baselibs.conf to src.rpm
+
+* Thu Mar 10 2011 Junfeng Dong <junfeng.dong@intel.com> -2.21
+- Update to 2.21. The changes include:
+- Drop the following patch which have been merged into 2.21 already.
+  binutils-2.20.51.0.2-ifunc-ld-s.patch, binutils-2.20.51.0.2-lwp.patch
+  binutils-2.20.51.0.2-tag-div-use.patch
+- Drop binutils-2.20.51.0.2-build-id.patch because of the code evolvement.
+- Recreate binutils-2.20.51.0.2-libtool-lib64.patch for 2.21 and rename
+  the new patch as binutils-2.21-libtool-lib64.patch.
+
+* Fri Jan  7 2011 Carsten Munk <carsten@maemo.org> - 2.20.51.0.2
+- Add armv7hl, armv7nhl cross-binutils- packages. Part of fix for BMC#11463
+
+* Fri Dec 31 2010 Carsten Munk <carsten@maemo.org> - 2.20.51.0.2
+- Add support for Tag_MPextension_use and Tag_DIV_use. Fixes BMC#11431
+
+* Wed Dec 29 2010 Austin Zhang <austin.zhang@intel.com> - 2.20.51.0.2
+- Bugfixing: 
+  BMC#10336 - Error when installing binutils with --excludedocs in .ks 
+
+* Tue May 25 2010 Austin Zhang <austin.zhang@intel.com> - 2.20.51.0.2
+- enable LTO (link time optimization)
+
+* Mon May 03 2010 Jan-Simon Möller <jansimon.moeller@linuxfoundation.org> - 2.20.51.0.2
+- Add precheckin.sh, README.packager
+- add cross-binutils-* packages (cross-compiler)
+
+* Thu Mar 04 2010 Anas Nashif <anas.nashif@intel.com> - 2.20.51.0.2
+- Use %{_target_platform} as the build target
+
+* Fri Dec 12 2009 Arjan van de Ven <arjan@linux.intel.com> - 2.20.51.0.2
+- add the LD_AS_NEEDED env variable back, and get us closer to upstream
+
+* Fri Nov 27 2009 Austin Zhang <austin.zhang@intel.com> - 2.20.51.0.2
+- Update to 2.20.51.0.2
+
+* Sat Aug 22 2009 Anas Nashif <anas.nashif@intel.com> - 2.19.51.0.14
+- Update to 2.19.51.0.14
+
+* Wed May 06 2009 Arjan van de Ven <arjan@linux.intel.com> - 2.19
+- Add LD_AS_NEEDED environment variable
+
+* Tue Jan 13 2009 Anas Nashif <anas.nashif@intel.com> - 2.19
+- Fixed source tag
+
+* Thu Jan 08 2009 Anas Nashif <anas.nashif@intel.com> - 2.19
+- Update to 2.19
+
+* Tue Dec 16 2008 Anas Nashif <anas.nashif@intel.com> - 2.18.50.0.6
+- Fixed rpmlint errors in Summary tag
+
+* Thu Dec 11 2008 Anas Nashif <anas.nashif@intel.com> - 2.18.50.0.6
+- Do not check for ia64
+
+* Thu Sep 18 2008 Austin Zhang <austin.zhang@intel.com> - 2.18.50.0.6
+- add check for the info file before installation
