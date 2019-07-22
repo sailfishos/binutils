@@ -43,7 +43,7 @@ Patch2: binutils-2.32-asneeded.patch
 ExclusiveArch: %ix86 x86_64
 %endif
 
-BuildRequires: quilt, texinfo >= 4.0, gettext, flex, bison, zlib-devel
+BuildRequires: texinfo >= 4.0, gettext, flex, bison, zlib-devel
 # Required for: ld-bootstrap/bootstrap.exp bootstrap with --static
 # It should not be required for: ld-elf/elf.exp static {preinit,init,fini} array
 %if %{run_testsuite}
