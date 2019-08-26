@@ -43,7 +43,7 @@ Patch2: binutils-2.32-asneeded.patch
 ExclusiveArch: %ix86 x86_64
 %endif
 
-BuildRequires: quilt, texinfo >= 4.0, gettext, flex, bison, zlib-devel
+BuildRequires: texinfo >= 4.0, gettext, flex, bison, zlib-devel
 # Required for: ld-bootstrap/bootstrap.exp bootstrap with --static
 # It should not be required for: ld-elf/elf.exp static {preinit,init,fini} array
 %if %{run_testsuite}
@@ -97,7 +97,12 @@ Man and info pages for %{name}.
 %setup -q -n %{name}-%{version}/upstream
 tar xfz %{SOURCE1}
 sed -i 's|^001_ld_makefile_patch.patch$||g' debian/patches/series
-QUILT_PATCHES=debian/patches quilt push -a
+cat debian/patches/series | grep -v ^# | grep -v ^$ | while read line
+do
+  echo "Using patch: $line"
+  patch -p1 -i debian/patches/$line
+done
+
 %patch2 -p1 -b .asneeded
 # From here on this is based on Fedora's build
 
@@ -174,6 +179,7 @@ CFLAGS="$CFLAGS -O0 -ggdb2"
   --disable-sim \
   --disable-libdecnumber \
   --enable-lto \
+  --enable-cet=auto \
   --with-bugurl=http://bugs.merproject.org
 
 make %{_smp_mflags} tooldir=%{_prefix} all

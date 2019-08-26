@@ -179,6 +179,8 @@ CFLAGS="$CFLAGS -O0 -ggdb2"
   --disable-sim \
   --disable-libdecnumber \
   --enable-lto \
+  --enable-cet=auto \
+  --enable-threads=yes \
   --with-bugurl=http://bugs.merproject.org
 
 make %{_smp_mflags} tooldir=%{_prefix} all
