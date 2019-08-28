@@ -11,7 +11,7 @@ License: GPLv3+
 Group: Development/Tools
 URL: http://sources.redhat.com/binutils
 Source: ftp://ftp.kernel.org/pub/linux/devel/binutils/%{name}-%{version}.tar.bz2
-Source1: binutils_2.32-7ubuntu1.debian.tar.gz
+Source1: binutils_2.32.51.20190821-2.debian.tar.gz
 Source2: binutils-2.19.50.0.1-output-format.sed
 Source200: precheckin.sh
 Source201: README.PACKAGER
@@ -95,7 +95,7 @@ Man and info pages for %{name}.
 
 %prep
 %setup -q -n %{name}-%{version}/upstream
-tar xfz %{SOURCE1}
+tar xf %{SOURCE1}
 sed -i 's|^001_ld_makefile_patch.patch$||g' debian/patches/series
 cat debian/patches/series | grep -v ^# | grep -v ^$ | while read line
 do
@@ -179,7 +179,6 @@ CFLAGS="$CFLAGS -O0 -ggdb2"
   --disable-sim \
   --disable-libdecnumber \
   --enable-lto \
-  --enable-cet=auto \
   --enable-threads=yes \
   --with-bugurl=http://bugs.merproject.org
 
