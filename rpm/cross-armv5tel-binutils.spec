@@ -43,7 +43,7 @@ Patch2: binutils-2.32-asneeded.patch
 ExclusiveArch: %ix86 x86_64
 %endif
 
-BuildRequires: quilt, texinfo >= 4.0, gettext, flex, bison, zlib-devel
+BuildRequires: texinfo >= 4.0, gettext, flex, bison, zlib-devel
 # Required for: ld-bootstrap/bootstrap.exp bootstrap with --static
 # It should not be required for: ld-elf/elf.exp static {preinit,init,fini} array
 %if %{run_testsuite}
@@ -97,7 +97,12 @@ Man and info pages for %{name}.
 %setup -q -n %{name}-%{version}/upstream
 tar xfz %{SOURCE1}
 sed -i 's|^001_ld_makefile_patch.patch$||g' debian/patches/series
-QUILT_PATCHES=debian/patches quilt push -a
+cat debian/patches/series | grep -v ^# | grep -v ^$ | while read line
+do
+  echo "Using patch: $line"
+  patch -p1 -i debian/patches/$line
+done
+
 %patch2 -p1 -b .asneeded
 # From here on this is based on Fedora's build
 
@@ -105,10 +110,16 @@ QUILT_PATCHES=debian/patches quilt push -a
 # The configure script is maintained in the repo by them for packaging.
 
 # On ppc64 we might use 64KiB pages
+
+# Fedora uses 64KiB page sizes on aarch64 and ppc.
+# This means even simple hello world type programs are 64KiB+ in size.
+# In order to save a decent amount of space in images use the default 4KiB
+# page sizes aarch64. Arch Linux for example also uses 4KiB page sizes
+# for aarch64.
 sed -i -e '/#define.*ELF_COMMONPAGESIZE/s/0x1000$/0x10000/' bfd/elf*ppc.c
-sed -i -e '/#define.*ELF_COMMONPAGESIZE/s/0x1000$/0x10000/' bfd/elf*aarch64.c
+# sed -i -e '/#define.*ELF_COMMONPAGESIZE/s/0x1000$/0x10000/' bfd/elf*aarch64.c
 sed -i -e '/common_pagesize/s/4 /64 /' gold/powerpc.cc
-sed -i -e '/pagesize/s/0x1000,/0x10000,/' gold/aarch64.cc
+# sed -i -e '/pagesize/s/0x1000,/0x10000,/' gold/aarch64.cc
 # LTP sucks
 perl -pi -e 's/i\[3-7\]86/i[34567]86/g' */conf*
 sed -i -e 's/%''{release}/%{release}/g' bfd/Makefile{.am,.in}
