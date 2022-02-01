@@ -110,10 +110,16 @@ done
 # The configure script is maintained in the repo by them for packaging.
 
 # On ppc64 we might use 64KiB pages
+
+# Fedora uses 64KiB page sizes on aarch64 and ppc.
+# This means even simple hello world type programs are 64KiB+ in size.
+# In order to save a decent amount of space in images use the default 4KiB
+# page sizes aarch64. Arch Linux for example also uses 4KiB page sizes
+# for aarch64.
 sed -i -e '/#define.*ELF_COMMONPAGESIZE/s/0x1000$/0x10000/' bfd/elf*ppc.c
-sed -i -e '/#define.*ELF_COMMONPAGESIZE/s/0x1000$/0x10000/' bfd/elf*aarch64.c
+# sed -i -e '/#define.*ELF_COMMONPAGESIZE/s/0x1000$/0x10000/' bfd/elf*aarch64.c
 sed -i -e '/common_pagesize/s/4 /64 /' gold/powerpc.cc
-sed -i -e '/pagesize/s/0x1000,/0x10000,/' gold/aarch64.cc
+# sed -i -e '/pagesize/s/0x1000,/0x10000,/' gold/aarch64.cc
 # LTP sucks
 perl -pi -e 's/i\[3-7\]86/i[34567]86/g' */conf*
 sed -i -e 's/%''{release}/%{release}/g' bfd/Makefile{.am,.in}
