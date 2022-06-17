@@ -9,8 +9,8 @@ Version: 2.32
 Release: 1
 License: GPLv3+
 Group: Development/Tools
-URL: http://sources.redhat.com/binutils
-Source: ftp://ftp.kernel.org/pub/linux/devel/binutils/%{name}-%{version}.tar.bz2
+URL: https://github.com/sailfishos/binutils
+Source: %{name}-%{version}.tar.bz2
 Source1: binutils_2.32-7ubuntu1.debian.tar.gz
 Source2: binutils-2.19.50.0.1-output-format.sed
 Source200: precheckin.sh
