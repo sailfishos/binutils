@@ -8,9 +8,8 @@ Name: cross-mipsel-binutils
 Version: 2.32
 Release: 1
 License: GPLv3+
-Group: Development/Tools
-URL: http://sources.redhat.com/binutils
-Source: ftp://ftp.kernel.org/pub/linux/devel/binutils/%{name}-%{version}.tar.bz2
+URL: https://github.com/sailfishos/binutils
+Source: %{name}-%{version}.tar.bz2
 Source1: binutils_2.32-7ubuntu1.debian.tar.gz
 Source2: binutils-2.19.50.0.1-output-format.sed
 Source200: precheckin.sh
@@ -73,7 +72,6 @@ converting addresses to file and line).
 
 %package devel
 Summary: BFD and opcodes static libraries and header files
-Group: System/Libraries
 Requires: zlib-devel
 Requires: %{name} = %{version}-%{release}
 
@@ -85,7 +83,6 @@ to consider using libelf instead of BFD.
 
 %package doc
 Summary: Documentation for %{name}
-Group:   Documentation
 Requires: %{name} = %{version}-%{release}
 Requires(post): /sbin/install-info
 Requires(preun): /sbin/install-info
