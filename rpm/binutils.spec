@@ -8,7 +8,6 @@ Name: binutils
 Version: 2.32
 Release: 1
 License: GPLv3+
-Group: Development/Tools
 URL: https://github.com/sailfishos/binutils
 Source: %{name}-%{version}.tar.bz2
 Source1: binutils_2.32-7ubuntu1.debian.tar.gz
@@ -73,7 +72,6 @@ converting addresses to file and line).
 
 %package devel
 Summary: BFD and opcodes static libraries and header files
-Group: System/Libraries
 Requires: zlib-devel
 Requires: %{name} = %{version}-%{release}
 
@@ -85,7 +83,6 @@ to consider using libelf instead of BFD.
 
 %package doc
 Summary: Documentation for %{name}
-Group:   Documentation
 Requires: %{name} = %{version}-%{release}
 Requires(post): /sbin/install-info
 Requires(preun): /sbin/install-info
