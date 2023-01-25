@@ -2,18 +2,21 @@
 %define isnative 1
 %define enable_shared 1
 %define run_testsuite 0
+# Default: build binutils-gprofng package.
+%bcond_without gprofng
 
 Summary: A GNU collection of binary utilities
 Name: cross-aarch64-binutils
-Version: 2.32
+Version: 2.40
 Release: 1
 License: GPLv3+
 URL: https://github.com/sailfishos/binutils
 Source: %{name}-%{version}.tar.bz2
-Source1: binutils_2.32-7ubuntu1.debian.tar.gz
+Source1: binutils_2.40-2ubuntu1.debian.tar.gz
 Source2: binutils-2.19.50.0.1-output-format.sed
 Source200: precheckin.sh
 Source201: README.PACKAGER
+Patch1: 0001-configure-remove-dependencies-on-gmp-and-mpfr-when-g.patch
 Patch2: binutils-2.32-asneeded.patch
 
 # MIPS gold support is not working as far as we know. The configure
@@ -27,6 +30,10 @@ Patch2: binutils-2.32-asneeded.patch
 %define has_gold 0
 %endif
 
+%ifnarch %{ix86} x86_64 aarch64
+%undefine with_gprofng
+%endif
+
 %if "%{name}" != "binutils"
 %if "%{name}" != "cross-mipsel-binutils" && "%{name}" != "cross-i486-binutils" && "%{name}" != "cross-x86_64-binutils" && "%{name}" != "cross-aarch64-binutils"
 %define binutils_target %(echo %{name} | sed -e "s/cross-\\(.*\\)-binutils/\\1/")-meego-linux-gnueabi
@@ -37,6 +44,8 @@ Patch2: binutils-2.32-asneeded.patch
 %define enable_shared 0
 %define isnative 0
 %define run_testsuite 0
+# Disable gprofng for cross builds
+%undefine with_gprofng
 %define cross %{binutils_target}-
 # single target atm.
 ExclusiveArch: %ix86 x86_64
@@ -90,6 +99,17 @@ Requires(preun): /sbin/install-info
 %description doc
 Man and info pages for %{name}.
 
+%if %{with gprofng}
+%package gprofng
+Summary: Next Generating code profiling tool
+Provides: gprofng = %{version}-%{release}
+Requires: binutils >= %{version}
+
+%description gprofng
+Gprofng is the GNU Next Generation profiler for analyzing the performance
+of Linux applications.  Gprofng allows you to:
+%endif
+
 %prep
 %setup -q -n %{name}-%{version}/upstream
 tar xfz %{SOURCE1}
@@ -100,6 +120,7 @@ do
   patch -p1 -i debian/patches/$line
 done
 
+%patch1 -p1 -b .gdbdependencies
 %patch2 -p1 -b .asneeded
 # From here on this is based on Fedora's build
 
@@ -178,6 +199,12 @@ CFLAGS="$CFLAGS -O0 -ggdb2"
   --enable-deterministic-archives \
   --disable-werror \
   --disable-gdb \
+  --disable-gdbserver \
+%if %{with gprofng}
+  --enable-gprofng=yes \
+%else
+  --enable-gprofng=no \
+%endif
   --disable-readline \
   --disable-sim \
   --disable-libdecnumber \
@@ -242,7 +269,7 @@ chmod +x %{buildroot}%{_libdir}/lib*.so*
 rm -f %{buildroot}%{_libdir}/lib{bfd,opcodes}.so
 
 # Remove libtool files, which reference the .so libs
-rm -f %{buildroot}%{_libdir}/lib{bfd,opcodes}.la
+rm -f %{buildroot}%{_libdir}/*.la
 
 %if "%{__isa_bits}" == "64"
 # Sanity check --enable-64-bit-bfd really works.
@@ -378,20 +405,26 @@ exit 0
 %{_bindir}/%{?cross}strip
 %if %{enable_shared}
 %{_libdir}/lib*.so
+%{_libdir}/libctf*so.*
+%{_libdir}/libsframe*so.*
 %exclude %{_libdir}/libbfd.so
 %exclude %{_libdir}/libopcodes.so
+%{_libdir}/bfd-plugins/libdep.so
 %endif
 
 %if !%{isnative}
 %exclude %{_includedir}/*
 %exclude %{_libdir}/*.a
 %exclude %{_libdir}/*.la
+%exclude %{_libdir}/bfd-plugins/*.a
 %endif
 
 %files doc
 %defattr(-,root,root,-)
 %doc %{_docdir}/%{name}-%{version}
 %{_mandir}/man1/*
+%exclude %{_mandir}/man1/gp-*
+%exclude %{_mandir}/man1/gprofng*
 %if %{isnative}
 %{_infodir}/*info*
 %endif
@@ -404,3 +437,15 @@ exit 0
 %{_libdir}/libopcodes.so
 %{_libdir}/lib*.a
 %endif # %{isnative}
+
+%if %{with gprofng}
+%files gprofng
+%{_bindir}/gp-*
+%{_bindir}/gprofng
+%{_mandir}/man1/gp-*
+%{_mandir}/man1/gprofng*
+%{_infodir}/gprofng.info.*
+%dir %{_libdir}/gprofng
+%{_libdir}/gprofng/*
+%{_sysconfdir}/gprofng.rc
+%endif
