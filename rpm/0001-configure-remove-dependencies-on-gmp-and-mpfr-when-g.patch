@@ -1,4 +1,4 @@
-From 5fb0e308577143ceb313fde5538dc9ecb038f29f Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>
 Date: Tue, 3 Jan 2023 14:24:43 +0100
 Subject: [PATCH] configure: remove dependencies on gmp and mpfr when gdb is
@@ -51,6 +51,3 @@ index 3a1eb0357e5..e95a9ed116e 100644
  fi
  
  gmplibs="-lmpfr -lgmp"
--- 
-2.25.1
-

@@ -1,5 +1,14 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@jolla.com>
+Date: Thu, 2 Feb 2023 15:59:43 +0200
+Subject: [PATCH] ld: Add LD_AS_NEEDED functionality
+
+---
+ ld/ldmain.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
 diff --git a/ld/ldmain.c b/ld/ldmain.c
-index 9290a189b0d..86fb10dc011 100644
+index 9290a189b0d..5765444adf8 100644
 --- a/ld/ldmain.c
 +++ b/ld/ldmain.c
 @@ -307,6 +307,8 @@ main (int argc, char **argv)

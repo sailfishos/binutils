@@ -17,7 +17,8 @@ Source2: binutils-2.19.50.0.1-output-format.sed
 Source200: precheckin.sh
 Source201: README.PACKAGER
 Patch1: 0001-configure-remove-dependencies-on-gmp-and-mpfr-when-g.patch
-Patch2: binutils-2.32-asneeded.patch
+Patch2: 0002-ld-Add-LD_AS_NEEDED-functionality.patch
+Patch3: 0003-toplevel-Makefile.def-add-install-strip-dependency-o.patch
 
 # MIPS gold support is not working as far as we know. The configure
 # --enable-gold seems to be a no-op so it's left in to make it easier
@@ -122,6 +123,7 @@ done
 
 %patch1 -p1 -b .gdbdependencies
 %patch2 -p1 -b .asneeded
+%patch3 -p1 -b .bfddependency
 # From here on this is based on Fedora's build
 
 # For this package, autotools are really only intended to be run by maintainers.
@@ -408,7 +410,10 @@ exit 0
 %{_libdir}/libctf*so.*
 %{_libdir}/libsframe*so.*
 %exclude %{_libdir}/libbfd.so
+%exclude %{_libdir}/libctf.so
+%exclude %{_libdir}/libctf-nobfd.so
 %exclude %{_libdir}/libopcodes.so
+%exclude %{_libdir}/libsframe.so
 %{_libdir}/bfd-plugins/libdep.so
 %endif
 
@@ -434,7 +439,10 @@ exit 0
 %defattr(-,root,root,-)
 %{_includedir}/*
 %{_libdir}/libbfd.so
+%{_libdir}/libctf.so
+%{_libdir}/libctf-nobfd.so
 %{_libdir}/libopcodes.so
+%{_libdir}/libsframe.so
 %{_libdir}/lib*.a
 %endif # %{isnative}
 
