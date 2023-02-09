@@ -19,6 +19,7 @@ Source201: README.PACKAGER
 Patch1: 0001-configure-remove-dependencies-on-gmp-and-mpfr-when-g.patch
 Patch2: 0002-ld-Add-LD_AS_NEEDED-functionality.patch
 Patch3: 0003-toplevel-Makefile.def-add-install-strip-dependency-o.patch
+Patch4: 0004-Speed-up-objcopy-s-note-merging.patch
 
 # MIPS gold support is not working as far as we know. The configure
 # --enable-gold seems to be a no-op so it's left in to make it easier
