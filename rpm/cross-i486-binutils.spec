@@ -7,16 +7,15 @@
 
 Summary: A GNU collection of binary utilities
 Name: cross-i486-binutils
-Version: 2.40
+Version: 2.41
 Release: 1
 License: GPLv3+
 URL: https://github.com/sailfishos/binutils
 Source: %{name}-%{version}.tar.bz2
-Source1: binutils_2.40-2ubuntu1.debian.tar.gz
+Source1: binutils_2.41-1ubuntu1.debian.tar.gz
 Source2: binutils-2.19.50.0.1-output-format.sed
 Source200: precheckin.sh
 Source201: README.PACKAGER
-Patch1: 0001-configure-remove-dependencies-on-gmp-and-mpfr-when-g.patch
 Patch2: binutils-2.32-asneeded.patch
 
 # MIPS gold support is not working as far as we know. The configure
@@ -103,7 +102,7 @@ Man and info pages for %{name}.
 %package gprofng
 Summary: Next Generating code profiling tool
 Provides: gprofng = %{version}-%{release}
-Requires: binutils >= %{version}
+Requires: %{name} = %{version}-%{release}
 
 %description gprofng
 Gprofng is the GNU Next Generation profiler for analyzing the performance
@@ -120,7 +119,6 @@ do
   patch -p1 -i debian/patches/$line
 done
 
-%patch1 -p1 -b .gdbdependencies
 %patch2 -p1 -b .asneeded
 # From here on this is based on Fedora's build
 
@@ -253,10 +251,17 @@ make CFLAGS="-g -fPIC $RPM_OPT_FLAGS -fvisibility=hidden" -C bfd
 %make_build -C opcodes clean
 %make_build CFLAGS="-g -fPIC $RPM_OPT_FLAGS" -C opcodes
 
-install -m 644 bfd/libbfd.a %{buildroot}%{_libdir}
+# Rebuild libsframe.a with -fPIC.
+%make_build -s -C libsframe clean
+%set_build_flags
+%make_build -s CFLAGS="-g -fPIC $RPM_OPT_FLAGS" -C libsframe
+
+install -m 644 bfd/.libs/libbfd.a %{buildroot}%{_libdir}
 install -m 644 libiberty/libiberty.a %{buildroot}%{_libdir}
 install -m 644 include/libiberty.h %{buildroot}%{_includedir}
 install -m 644 include/demangle.h %{buildroot}%{_includedir}
+install -m 644 libsframe/.libs/libsframe.a %{buildroot}%{_libdir}
+
 # Remove Windows/Novell only man pages
 rm -f %{buildroot}%{_mandir}/man1/{dlltool,nlmconv,windres}*
 
@@ -304,8 +309,9 @@ tee %{buildroot}%{_libdir}/libbfd.so <<EOH
 
 $OUTPUT_FORMAT
 
-/* The libz dependency is unexpected by legacy build scripts.  */
-INPUT ( %{_libdir}/libbfd.a -liberty -lz )
+/* The libz & libsframe dependencies are unexpected by legacy build scripts.  */
+/* The libdl dependency is for plugin support.  (BZ 889134)  */
+INPUT ( %{_libdir}/libbfd.a %{_libdir}/libsframe.a -liberty -lz -ldl )
 EOH
 
 tee %{buildroot}%{_libdir}/libopcodes.so <<EOH
@@ -406,6 +412,9 @@ exit 0
 %if %{enable_shared}
 %{_libdir}/lib*.so
 %{_libdir}/libctf*so.*
+%if %{with gprofng}
+%{_libdir}/libgprofng.so.*
+%endif
 %{_libdir}/libsframe*so.*
 %exclude %{_libdir}/libbfd.so
 %exclude %{_libdir}/libopcodes.so
@@ -434,6 +443,9 @@ exit 0
 %defattr(-,root,root,-)
 %{_includedir}/*
 %{_libdir}/libbfd.so
+%if %{with gprofng}
+%{_libdir}/libgprofng.so
+%endif
 %{_libdir}/libopcodes.so
 %{_libdir}/lib*.a
 %endif # %{isnative}
