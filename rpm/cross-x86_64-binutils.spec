@@ -329,6 +329,13 @@ rm -rf %{buildroot}%{_infodir}
 #rm -rf %{buildroot}%{_datadir}/locale
 #rm -rf %{buildroot}%{_mandir}
 rm -rf %{buildroot}%{_libdir}/libiberty.a
+
+# symlink some of binaries
+for file in {ar,as,ld,ld.bfd,nm,objcopy,objdump,ranlib,readelf,strip}
+do
+  ln -sf %{?cross}$file %{buildroot}%{_bindir}/$file
+done
+
 %endif # !%{isnative}
 
 # This one comes from gcc
@@ -409,6 +416,18 @@ exit 0
 %{_bindir}/%{?cross}size
 %{_bindir}/%{?cross}strings
 %{_bindir}/%{?cross}strip
+%if !%{isnative}
+%{_bindir}/ar
+%{_bindir}/as
+%{_bindir}/ld
+%{_bindir}/ld.bfd
+%{_bindir}/nm
+%{_bindir}/objcopy
+%{_bindir}/objdump
+%{_bindir}/ranlib
+%{_bindir}/readelf
+%{_bindir}/strip
+%endif
 %if %{enable_shared}
 %{_libdir}/lib*.so
 %{_libdir}/libctf*so.*
