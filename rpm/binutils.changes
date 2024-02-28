@@ -7,7 +7,7 @@
 * Sun Jan 17 2016 Martin Ghosal <martin_ghosal@hotmail.co.uk> - 2.25
 - Enable gold for cross-aarch64 and aarch64 builds, fixes MER#1464
 
-* Wed Apr 12 2015 Islam Amer <islam.amer@jollamobile.com> - 2.25
+* Mon Apr 13 2015 Islam Amer <islam.amer@jollamobile.com> - 2.25
 - Trivial changelog fixes MER#888
 
 * Sun Dec 28 2014 Pasi Sjöholm <pasi.sjoholm@jollamobile.com> - 2.25
@@ -97,7 +97,7 @@
 * Thu Mar 04 2010 Anas Nashif <anas.nashif@intel.com> - 2.20.51.0.2
 - Use %{_target_platform} as the build target
 
-* Fri Dec 12 2009 Arjan van de Ven <arjan@linux.intel.com> - 2.20.51.0.2
+* Sat Dec 12 2009 Arjan van de Ven <arjan@linux.intel.com> - 2.20.51.0.2
 - add the LD_AS_NEEDED env variable back, and get us closer to upstream
 
 * Fri Nov 27 2009 Austin Zhang <austin.zhang@intel.com> - 2.20.51.0.2
