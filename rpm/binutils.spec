@@ -7,34 +7,25 @@
 
 Summary: A GNU collection of binary utilities
 Name: binutils
-Version: 2.42
+Version: 2.44
 Release: 1
 License: GPLv3+
 URL: https://github.com/sailfishos/binutils
 Source: %{name}-%{version}.tar.bz2
-Source1: binutils_2.42-3ubuntu1.debian.tar.gz
+Source1: binutils_2.44-2ubuntu1.debian.tar.gz
 Source2: binutils-2.19.50.0.1-output-format.sed
 Source200: precheckin.sh
 Source201: README.PACKAGER
 Patch2: binutils-2.32-asneeded.patch
 
-# MIPS gold support is not working as far as we know. The configure
-# --enable-gold seems to be a no-op so it's left in to make it easier
-# to fix when gold is supported in MIPS.
 %define has_gold 1
-%ifarch mips mipsel
-%define has_gold 0
-%endif
-%if "%{name}" == "cross-mipsel-binutils"
-%define has_gold 0
-%endif
 
 %ifnarch %{ix86} x86_64 aarch64
 %undefine with_gprofng
 %endif
 
 %if "%{name}" != "binutils"
-%if "%{name}" != "cross-mipsel-binutils" && "%{name}" != "cross-i486-binutils" && "%{name}" != "cross-x86_64-binutils" && "%{name}" != "cross-aarch64-binutils"
+%if "%{name}" != "cross-i486-binutils" && "%{name}" != "cross-x86_64-binutils" && "%{name}" != "cross-aarch64-binutils"
 %define binutils_target %(echo %{name} | sed -e "s/cross-\\(.*\\)-binutils/\\1/")-meego-linux-gnueabi
 %else
 %define binutils_target %(echo %{name} | sed -e "s/cross-\\(.*\\)-binutils/\\1/")-meego-linux-gnu
@@ -231,7 +222,6 @@ rm -f binutils-%{_target_platform}.tar.bz2 binutils-%{_target_platform}-*.{sum,l
 %endif
 
 %install
-rm -rf %{buildroot}
 make install DESTDIR=%{buildroot}
 %if %{isnative}
 make prefix=%{buildroot}%{_prefix} infodir=%{buildroot}%{_infodir} install-info
@@ -335,6 +325,11 @@ rm -rf %{buildroot}%{_libdir}/libiberty.a
 rm -f %{buildroot}%{_infodir}/dir
 rm -rf %{buildroot}%{_prefix}/%{binutils_target}
 
+# Remove examples
+%if %{with gprofng}
+rm -rf %{buildroot}%{_docdir}/gprofng/examples.tar.gz
+%endif
+
 %find_lang %{?cross}binutils
 %find_lang %{?cross}opcodes
 %find_lang %{?cross}bfd
@@ -354,9 +349,6 @@ cat %{?cross}gprof.lang >> %{?cross}binutils.lang
 # move doc files
 mkdir -p %{buildroot}%{_docdir}/%{name}-%{version}
 install -m0644 README %{buildroot}%{_docdir}/%{name}-%{version}
-
-%clean
-rm -rf %{buildroot}
 
 %if %{isnative}
 %post -p /sbin/ldconfig
@@ -388,7 +380,6 @@ exit 0
 %endif # %{isnative}
 
 %files -f %{?cross}binutils.lang
-%defattr(-,root,root,-)
 %license COPYING3
 # Include all the bin tools explictly so build fails when they change
 %{_bindir}/%{?cross}addr2line
@@ -429,10 +420,8 @@ exit 0
 %endif
 
 %files doc
-%defattr(-,root,root,-)
 %doc %{_docdir}/%{name}-%{version}
 %{_mandir}/man1/*
-%exclude %{_mandir}/man1/gp-*
 %exclude %{_mandir}/man1/gprofng*
 %if %{isnative}
 %{_infodir}/*info*
@@ -440,7 +429,6 @@ exit 0
 
 %if %{isnative}
 %files devel
-%defattr(-,root,root,-)
 %{_includedir}/*
 %{_libdir}/libbfd.so
 %if %{with gprofng}
@@ -453,8 +441,7 @@ exit 0
 %if %{with gprofng}
 %files gprofng
 %{_bindir}/gp-*
-%{_bindir}/gprofng
-%{_mandir}/man1/gp-*
+%{_bindir}/gprofng*
 %{_mandir}/man1/gprofng*
 %{_infodir}/gprofng.info.*
 %dir %{_libdir}/gprofng
