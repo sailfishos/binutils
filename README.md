@@ -1,4 +1,6 @@
-All changes only go to binutils.spec
+## Packaging guide
+
+**All changes only go to binutils.spec**
 
 Execute  "sh precheckin.sh" to update the cross-* packaging files !
 
