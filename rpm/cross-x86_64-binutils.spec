@@ -7,15 +7,13 @@
 
 Summary: A GNU collection of binary utilities
 Name: cross-x86_64-binutils
-Version: 2.44
+Version: 2.45
 Release: 1
 License: GPLv3+
 URL: https://github.com/sailfishos/binutils
 Source: %{name}-%{version}.tar.bz2
-Source1: binutils_2.44-2ubuntu1.debian.tar.gz
+Source1: binutils_2.45-7ubuntu1.debian.tar.gz
 Source2: binutils-2.19.50.0.1-output-format.sed
-Source200: precheckin.sh
-Source201: README.PACKAGER
 Patch2: binutils-2.32-asneeded.patch
 
 %define has_gold 1
@@ -110,7 +108,7 @@ do
   patch -p1 -i debian/patches/$line
 done
 
-%patch2 -p1 -b .asneeded
+%patch -P 2 -p1 -b .asneeded
 # From here on this is based on Fedora's build
 
 # For this package, autotools are really only intended to be run by maintainers.
