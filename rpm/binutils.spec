@@ -12,7 +12,7 @@ Release: 1
 License: GPLv3+
 URL: https://github.com/sailfishos/binutils
 Source: %{name}-%{version}.tar.bz2
-Source1: binutils_2.45-7ubuntu1.debian.tar.gz
+Source1: binutils_2.45-7ubuntu1.2.debian.tar.gz
 Source2: binutils-2.19.50.0.1-output-format.sed
 Patch2: binutils-2.32-asneeded.patch
 
@@ -310,7 +310,7 @@ $OUTPUT_FORMAT
 INPUT ( %{_libdir}/libopcodes.a -lbfd )
 EOH
 
-# !%{isnative}
+# !%%{isnative}
 %else
 # For cross-binutils we drop the documentation.
 rm -rf %{buildroot}%{_infodir}
@@ -318,7 +318,7 @@ rm -rf %{buildroot}%{_infodir}
 #rm -rf %{buildroot}%{_datadir}/locale
 #rm -rf %{buildroot}%{_mandir}
 rm -rf %{buildroot}%{_libdir}/libiberty.a
-# !%{isnative}
+# !%%{isnative}
 %endif
 
 # This one comes from gcc
@@ -377,7 +377,7 @@ if [ $1 = 0 ] ;then
 fi
 exit 0
 
-# %{isnative}
+# %%{isnative}
 %endif
 
 %files -f %{?cross}binutils.lang
@@ -437,7 +437,7 @@ exit 0
 %endif
 %{_libdir}/libopcodes.so
 %{_libdir}/lib*.a
-# %{isnative}
+# %%{isnative}
 %endif
 
 %if %{with gprofng}
