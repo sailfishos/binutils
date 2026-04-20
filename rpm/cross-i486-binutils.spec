@@ -7,12 +7,12 @@
 
 Summary: A GNU collection of binary utilities
 Name: cross-i486-binutils
-Version: 2.45
+Version: 2.46
 Release: 1
 License: GPLv3+
 URL: https://github.com/sailfishos/binutils
 Source: %{name}-%{version}.tar.bz2
-Source1: binutils_2.45-7ubuntu1.2.debian.tar.gz
+Source1: binutils_2.46-3ubuntu2.debian.tar.gz
 Source2: binutils-2.19.50.0.1-output-format.sed
 Patch2: binutils-2.32-asneeded.patch
 
